@@ -18,8 +18,10 @@ const userSchema = mongoose.Schema({
     facebookId: String,
 
     favouriteArticles: [String],
-    //TODO: implement additional collection for followings based on https://stackoverflow.com/a/14459370/17273831
-    following: [String],
+    following: {
+        type: Number,
+        default: 0
+    },
     followers: {
         type: Number,
         default: 0
