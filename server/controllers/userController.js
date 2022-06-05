@@ -29,12 +29,14 @@ exports.loginUser = (req, res, next) => {
                 res.status(403).send(info.message);
             }
         } else {
-            await UserService.loginUser(req, users);
+            const token = await UserService.loginUser(req, users);
             res.status(200).send({
                 auth: true,
+                token: token,
                 message: 'user found & logged in',
             });
-        }
+        };
+       
     })(req, res, next);
 };
 

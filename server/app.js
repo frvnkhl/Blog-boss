@@ -5,6 +5,7 @@ const cors = require('cors');
 const passport = require('passport');
 const db = require('./database/db');
 const userRoutes = require('./routes/userRoutes');
+const articleRoutes = require('./routes/articleRoutes');
 
 //app config
 const app = express();
@@ -31,6 +32,7 @@ app.get('/', (req, res) => {
     res.send('App is working!')
 });
 app.use('/user', userRoutes);
+app.use('/article', articleRoutes);
 
 //listen
 app.listen(port, () => {

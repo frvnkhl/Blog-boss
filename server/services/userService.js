@@ -12,7 +12,7 @@ exports.registerUser = async (req, user) => {
             username: req.body.username,
             password: req.body.password
         };
-        console.log(data);
+        // console.log(data);
         await User.findOne({ username: data.username }).then(user => {
             console.log(user);
             user.email = data.userEmail;
@@ -22,16 +22,22 @@ exports.registerUser = async (req, user) => {
     });
 }
 
+//TODO later delete token field from model (leave it for now for debugging purposes)
 exports.loginUser = async (req, users) => {
-    req.logIn(users, async () => {
-        await User.findOne({ username: req.body.username }).then(user => {
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-                expiresIn: 60 * 60,
-            });
-            user.token = token;
-            user.save();
-        });
+    req.logIn(users, () => {
+        User.findOne({ username: req.body.username });
     });
+
+    const getUserToken = async () => {
+        const token = jwt.sign({ id: users._id }, process.env.JWT_SECRET, {
+            expiresIn: 60 * 60,
+        });
+        users.token = token;
+        users.save();
+        return token;
+    }
+
+    return getUserToken();
 }
 
 exports.showProfile = async (user) => {
