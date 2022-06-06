@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 const findOrCreate = require('mongoose-findorcreate');
 const ObjectId = mongoose.Types.ObjectId;
-//TODO add user avatar field
+
 const userSchema = mongoose.Schema({
     username: {
         type: String,
@@ -30,7 +30,7 @@ const userSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    token: String
+    avatar: String
 });
 
 userSchema.plugin(passportLocalMongoose);

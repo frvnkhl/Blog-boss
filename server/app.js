@@ -6,6 +6,7 @@ const passport = require('passport');
 const db = require('./database/db');
 const userRoutes = require('./routes/userRoutes');
 const articleRoutes = require('./routes/articleRoutes');
+const followerRoutes = require('./routes/followerRoutes');
 
 //app config
 const app = express();
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
 });
 app.use('/user', userRoutes);
 app.use('/article', articleRoutes);
+app.use('/follow', followerRoutes);
 
 //listen
 app.listen(port, () => {

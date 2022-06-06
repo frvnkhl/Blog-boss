@@ -101,7 +101,7 @@ exports.getArticleLikes = async (req, res, next) => {
             const articleId = req.params.id;
             const userList = await ArticleService.getArticleLikes(articleId);
 
-            res.status(200).send({likes: userList});
+            res.status(200).send({ likes: userList });
         }
     })(req, res, next);
 };
@@ -120,9 +120,9 @@ exports.addComment = async (req, res, next) => {
 
             try {
                 const createdComment = await ArticleService.addComment(articleId, user, comment);
-                res.status(200).send({message:'Comment added', comment: createdComment});
+                res.status(200).send({ message: 'Comment added', comment: createdComment });
             } catch (err) {
-                res.status(400).send({message: "Couldn't add comment"});
+                res.status(400).send({ message: "Couldn't add comment" });
             }
         }
     })(req, res, next);
@@ -142,11 +142,44 @@ exports.deleteComment = async (req, res, next) => {
 
             try {
                 const commentDeleted = await ArticleService.deleteComment(articleId, user, commentId);
-                commentDeleted ? res.status(200).send({ message: 'Comment deleted successfully'}) :
-                res.status(403).send({message: "You don't have rights to delete this comment"});
+                commentDeleted ? res.status(200).send({ message: 'Comment deleted successfully' }) :
+                    res.status(403).send({ message: "You don't have rights to delete this comment" });
             } catch (err) {
                 res.status(400).send({ message: "Couldn't delete comment" });
             }
         }
     })(req, res, next);
-}
+};
+
+exports.likeArticle = async (req, res, next) => {
+    passport.authenticate('jwt', async (err, user, info) => {
+        if (err) {
+            console.error({ authError: err });
+        };
+        if (info !== undefined) {
+            console.error({ authError: info.message });
+            res.status(403).send(info.message);
+        } else {
+            const articleId = req.params.id;
+            await ArticleService.likeArticle(articleId, user);
+            res.status(200).send({ message: 'success' });
+        }
+    })(req, res, next);
+};
+
+exports.likeComment = async (req, res, next) => {
+    passport.authenticate('jwt', async (err, user, info) => {
+        if (err) {
+            console.error({ authError: err });
+        };
+        if (info !== undefined) {
+            console.error({ authError: info.message });
+            res.status(403).send(info.message);
+        } else {
+            const articleId = req.params.id;
+            const commentId = req.params.commentId;
+            await ArticleService.likeComment(articleId, commentId, user);
+            res.status(200).send({ message: 'success' });
+        }
+    })(req, res, next);
+};

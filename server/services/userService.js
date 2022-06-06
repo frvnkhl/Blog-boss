@@ -22,7 +22,6 @@ exports.registerUser = async (req, user) => {
     });
 }
 
-//TODO later delete token field from model (leave it for now for debugging purposes)
 exports.loginUser = async (req, users) => {
     req.logIn(users, () => {
         User.findOne({ username: req.body.username });
@@ -32,8 +31,6 @@ exports.loginUser = async (req, users) => {
         const token = jwt.sign({ id: users._id }, process.env.JWT_SECRET, {
             expiresIn: 60 * 60,
         });
-        users.token = token;
-        users.save();
         return token;
     }
 
@@ -62,6 +59,10 @@ exports.passwordChange = async (user, password) => {
     }
 
     return getResponse();
+}
+
+exports.avatarChange = async (user, avatar) => {
+    return await User.updateOne({ _id: user._id }, { avatar: avatar });
 }
 
 const formatUser = (user) => {

@@ -9,6 +9,7 @@ router.post('/login', UserController.loginUser);
 router.get('/logout', UserController.logoutUser);
 router.get('/profile', UserController.getMyProfile);
 router.get('/profile/:id', UserController.getProfile);
-router.patch('/profile', UserController.changePassword);
+router.patch('/newPassword', UserController.changePassword);
+router.patch('/newAvatar', UserController.changeAvatar);
 
 module.exports = router;

@@ -56,11 +56,47 @@ exports.deleteComment = async (id, user, commentId) => {
     return false;
 };
 
-//TODO test this method & later add avatar to it
 exports.getArticleLikes = async (id) => {
     const userList = await User.find({ favouriteArticles: { $all: [mongoose.Types.ObjectId(id)] } });
     const formattedUsers = [];
 
-    userList.forEach(user => formattedUsers.push({username: user.username}));
+    userList.forEach(user => formattedUsers.push({ username: user.username, avatar: user.avatar }));
     return formattedUsers;
-}
+};
+
+exports.likeArticle = async (id, user) => {
+    const article = await Article.findById(id);
+    if (isFavourite(id, user)) {
+        article.likes -= 1;
+        article.save();
+        const articleIndex = user.favouriteArticles.indexOf(id);
+        user.favouriteArticles.splice(articleIndex, 1);
+        user.save();
+    } else {
+        article.likes += 1;
+        article.save();
+        user.favouriteArticles.push(id);
+        user.save();
+    }
+};
+
+exports.likeComment = async (id, commentId, user) => {
+    const article = await Article.findById(id);
+    const comment = article.comments.find(comment => comment._id === mongoose.Types.ObjectId(commentId));
+    if (isCommentLiked(comment, user)) {
+        const userIndex = comment.likes.indexOf(user._id);
+        comment.likes.splice(userIndex, 1);
+        article.save();
+    } else {
+        comment.likes.push(user._id);
+        article.save();
+    }
+};
+
+const isFavourite = (id, user) => {
+    user.favouriteArticles.filter(article => article === id).lenght > 0 ? true : false;
+};
+
+const isCommentLiked = (comment, user) => {
+    comment.likes.includes(user._id) ? true : false;
+};
