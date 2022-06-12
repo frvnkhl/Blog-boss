@@ -1,5 +1,5 @@
-const Follower = require('../models/followerModel');
-const Following = require('../models/followingModel');
+const { Follower } = require('../models/followerModel');
+const { Following } = require('../models/followingModel');
 const mongoose = require('mongoose');
 
 exports.changeFollowStatus = async (user, userId) => {

@@ -1,4 +1,4 @@
-const User = require('../models/userModel');
+const { User } = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -6,7 +6,7 @@ const BCRYPT_SALT_ROUNDS = 12;
 
 exports.registerUser = async (req, user) => {
     req.logIn(user, async () => {
-        console.log(user);
+        // console.log(user);
         const data = {
             userEmail: req.body.email,
             username: req.body.username,
@@ -14,7 +14,7 @@ exports.registerUser = async (req, user) => {
         };
         // console.log(data);
         await User.findOne({ username: data.username }).then(user => {
-            console.log(user);
+            // console.log(user);
             user.email = data.userEmail;
         }).then(() => {
             console.log('user created in db');
@@ -54,7 +54,7 @@ exports.passwordChange = async (user, password) => {
 
     const getResponse = async () => {
         const res = await response;
-        console.log({ response: res });
+        // console.log({ response: res });
         return res;
     }
 

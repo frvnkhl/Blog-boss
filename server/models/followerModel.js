@@ -15,4 +15,5 @@ const followerSchema = mongoose.Schema({
 
 followerSchema.plugin(findOrCreate);
 
-module.exports = mongoose.model('Follower', followerSchema);
+const Follower = mongoose.model('Follower', followerSchema);
+module.exports = { followerSchema, Follower };

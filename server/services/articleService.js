@@ -1,6 +1,6 @@
-const Article = require('../models/articleModel');
+const { Article } = require('../models/articleModel');
 const { Comment } = require('../models/commentModel');
-const User = require('../models/userModel');
+const { User } = require('../models/userModel');
 const mongoose = require('mongoose');
 
 exports.createArticle = (article, user) => {
@@ -46,9 +46,9 @@ exports.addComment = async (id, user, comment) => {
 
 exports.deleteComment = async (id, user, commentId) => {
     const article = await Article.findById(mongoose.Types.ObjectId(id));
-    const commentToDelete = article.comments.find(comment => comment._id === commentId);
+    const commentToDelete = article.comments.filter(comment => comment._id === mongoose.Types.ObjectId(commentId));
     if (commentToDelete.author === user._id || commentToDelete.author === article.author) {
-        const commentIndex = article.comments.indexOf(commentToDelete);
+        const commentIndex = article.comments.indexOf(commentToDelete[0]);
         article.comments.splice(commentIndex, 1);
         article.save();
         return true;
@@ -81,14 +81,15 @@ exports.likeArticle = async (id, user) => {
 };
 
 exports.likeComment = async (id, commentId, user) => {
-    const article = await Article.findById(id);
-    const comment = article.comments.find(comment => comment._id === mongoose.Types.ObjectId(commentId));
-    if (isCommentLiked(comment, user)) {
-        const userIndex = comment.likes.indexOf(user._id);
-        comment.likes.splice(userIndex, 1);
+    const article = await Article.findById(mongoose.Types.ObjectId(id));
+    const comment = article.comments.filter(comment => comment._id === mongoose.Types.ObjectId(commentId));
+    console.log({article: article, comment: comment});
+    if (isCommentLiked(comment[0], user)) {
+        const userIndex = comment[0].likes.indexOf(user._id);
+        comment[0].likes.splice(userIndex, 1);
         article.save();
     } else {
-        comment.likes.push(user._id);
+        comment[0].likes.push(user._id);
         article.save();
     }
 };
@@ -98,5 +99,5 @@ const isFavourite = (id, user) => {
 };
 
 const isCommentLiked = (comment, user) => {
-    comment.likes.includes(user._id) ? true : false;
+    comment.likes.filter(like => like === user._id).lenght > 0 ? true : false;
 };
