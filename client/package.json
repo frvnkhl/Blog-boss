@@ -1,0 +1,39 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/cache": "^11.9.3",
+    "@emotion/react": "^11.9.3",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.9.3",
+    "@fontsource/roboto": "^4.5.7",
+    "@mui/icons-material": "^5.8.3",
+    "@mui/material": "^5.8.3",
+    "@tiptap/extension-heading": "^2.0.0-beta.26",
+    "@tiptap/extension-image": "^2.0.0-beta.30",
+    "@tiptap/extension-link": "^2.0.0-beta.41",
+    "@tiptap/extension-underline": "^2.0.0-beta.25",
+    "@tiptap/extension-youtube": "^2.0.0-beta.4",
+    "@tiptap/react": "^2.0.0-beta.109",
+    "@tiptap/starter-kit": "^2.0.0-beta.185",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "draft-js": "^0.11.7",
+    "jwt-decode": "^3.1.2",
+    "next": "12.1.6",
+    "react": "18.1.0",
+    "react-dom": "18.1.0"
+  },
+  "devDependencies": {
+    "eslint": "8.17.0",
+    "eslint-config-next": "12.1.6",
+    "style-loader": "^3.3.1"
+  }
+}

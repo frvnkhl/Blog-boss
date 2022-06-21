@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
     origin: process.env.CLIENT_URL,
-    methods: 'GET, POST, PATCH, DELETE'
+    methods: 'GET, POST, PATCH, DELETE',
 }));
 app.use(passport.initialize());
 app.use(express.json());

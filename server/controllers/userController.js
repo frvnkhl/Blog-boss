@@ -20,15 +20,15 @@ exports.registerUser = (req, res, next) => {
 exports.loginUser = (req, res, next) => {
     passport.authenticate('login', async (err, users, info) => {
         if (err) {
-            console.error({ authError: err });
-            res.status(400).send(err);
+            console.error({ message: err });
+            res.status(400).send({ message: err });
         }
         if (info !== undefined) {
-            console.error({ authError: info.message });
+            console.error({ message: info.message });
             if (info.message === 'bad username') {
-                res.status(401).send(info.message);
+                res.status(401).send({ message: info.message });
             } else {
-                res.status(403).send(info.message);
+                res.status(403).send({ message: info.message });
             }
         } else {
             const token = await UserService.loginUser(req, users);
@@ -50,7 +50,7 @@ exports.getMyProfile = (req, res, next) => {
     passport.authenticate('jwt', { session: false }, async (err, user, info) => {
         if (err) {
             console.log({ authError: err });
-            res.status(400).send({authError: err});
+            res.status(400).send({ authError: err });
         };
         if (info !== undefined) {
             console.log({ authError: info.message });
@@ -116,9 +116,9 @@ exports.changeAvatar = (req, res, next) => {
         } else {
             const newAvatar = req.body.avatar;
             const response = await UserService.avatarChange(user, newAvatar);
-            response.modifiedCount !== 0 ? 
-            res.status(200).send({ message: 'Avatar changes successfully' }) : 
-            res.status(400).send({ message: 'Something went wrong' });
+            response.modifiedCount !== 0 ?
+                res.status(200).send({ message: 'Avatar changes successfully' }) :
+                res.status(400).send({ message: 'Something went wrong' });
         }
     })(req, res, next);
 };
