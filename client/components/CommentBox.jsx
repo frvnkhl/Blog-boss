@@ -80,7 +80,7 @@ const CommentBox = (props) => {
                             <CardActions>
                                 <Box sx={{ display: 'flex', width: '100%' }}>
                                     <Box>
-                                        <Typography variant="p" ml={1}>{`${comment.likes.length} likes`}</Typography>
+                                        <Typography variant="p" ml={1}>{comment.likes.length === 1 ? `${comment.likes.length} like` : `${comment.likes.length} likes`}</Typography>
                                         {(comment.likes.includes(user.id)) ?
                                             <IconButton color="error" onClick={() => handleCommentLike(comment._id)}>
                                                 <ThumbDown />
