@@ -67,9 +67,10 @@ exports.avatarChange = async (user, avatar) => {
 
 const formatUser = (user) => {
     return {
+        id: user._id,
         username: user.username,
         email: user.email,
-        favourteArticles: user.favourteArticles,
+        favouriteArticles: user.favouriteArticles,
         following: user.following,
         followers: user.followers
     };

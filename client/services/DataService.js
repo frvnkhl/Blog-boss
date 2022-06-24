@@ -28,6 +28,48 @@ const addNewArticle = async (article, accessToken) => {
     });
 };
 
-const DataService = { registerUser, loginUser, getAllArticles, addNewArticle };
+const getArticle = async (id, accessToken) => {
+    return await server.get(`/article/${id}`, {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
+const getUser = async (id, accessToken) => {
+    return await server.get(`/user/profile/${id}`, {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
+const likeArticle = async (id, accessToken) => {
+    return await server.get(`/article/${id}/like`, {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
+const getCurrentUser = async (accessToken) => {
+    return await server.get('/user/profile', {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
+const addNewComment = async (id, comment, accessToken) => {
+    return await server.post(`/article/${id}/newComment`, comment, {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
+const likeComment = async (id, commentId, accessToken) => {
+    return await server.get(`/article/${id}/${commentId}/like`, {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
+const deleteComment = async (id, commentId, accessToken) => {
+    return await server.delete(`/article/${id}/${commentId}`, {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
+const DataService = { registerUser, loginUser, getAllArticles, addNewArticle, getArticle, getUser, likeArticle, getCurrentUser, addNewComment, likeComment, deleteComment };
 
 export default DataService;

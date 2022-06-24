@@ -7,6 +7,7 @@ import { Box } from '@mui/system'
 import { Button, Card, CardContent, Paper, Typography } from '@mui/material'
 import DataService from '../services/DataService'
 import TokenService from '../services/TokenService'
+import Link from 'next/link'
 
 
 const Home = () => {
@@ -72,7 +73,9 @@ const Home = () => {
                         {article.title}
                       </Typography>
                       <Typography variant='p' dangerouslySetInnerHTML={{ __html: `${article.content.slice(0, 100)}...`}} />
-                      <Button>Read more</Button>
+                      <Link href={`/article/${article._id}`}>
+                        <Button>Read more</Button>
+                      </Link>
                     </CardContent>
                   </Card>
                 ))}

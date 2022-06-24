@@ -117,7 +117,6 @@ exports.addComment = async (req, res, next) => {
         } else {
             const articleId = req.params.id;
             const comment = req.body.comment;
-
             try {
                 const createdComment = await ArticleService.addComment(articleId, user, comment);
                 res.status(200).send({ message: 'Comment added', comment: createdComment });
