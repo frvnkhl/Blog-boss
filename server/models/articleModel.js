@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { commentSchema } = require('./commentModel');
-const ObjectId = mongoose.Types.ObjectId;
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const articleSchema = mongoose.Schema({
     author: {

@@ -70,6 +70,32 @@ const deleteComment = async (id, commentId, accessToken) => {
     });
 };
 
-const DataService = { registerUser, loginUser, getAllArticles, addNewArticle, getArticle, getUser, likeArticle, getCurrentUser, addNewComment, likeComment, deleteComment };
+const deleteArticle = async (id, accessToken) => {
+    return await server.delete(`/article/${id}`, {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
+const changePassword = async (password, accessToken) => {
+    return await server.patch('/user/newPassword', password, {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
+const DataService = {
+    registerUser,
+    loginUser,
+    getAllArticles,
+    addNewArticle,
+    getArticle,
+    getUser,
+    likeArticle,
+    getCurrentUser,
+    addNewComment,
+    likeComment,
+    deleteComment,
+    deleteArticle,
+    changePassword,
+};
 
 export default DataService;

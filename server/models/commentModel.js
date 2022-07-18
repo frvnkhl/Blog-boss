@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const commentSchema = mongoose.Schema({
     author: {
@@ -7,10 +7,10 @@ const commentSchema = mongoose.Schema({
         ref: 'User'
     },
     comment: String,
-    likes: [{
-        type: ObjectId,
+    likes: {
+        type: [ObjectId],
         ref: 'User'
-    }]
+    }
 });
 
 const Comment = mongoose.model('Comment', commentSchema);

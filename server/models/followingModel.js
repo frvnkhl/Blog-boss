@@ -7,10 +7,10 @@ const followingSchema = mongoose.Schema({
         type: ObjectId,
         ref: 'User'
     },
-    following: [{
-        type: ObjectId,
+    following: {
+        type: [ObjectId],
         ref: 'User'
-    }]
+    }
 });
 
 followingSchema.plugin(findOrCreate);

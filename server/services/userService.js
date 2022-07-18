@@ -46,9 +46,12 @@ exports.getUser = async (id) => {
         .then(user => formatUser(user));
 }
 
-exports.passwordChange = async (user, password) => {
+exports.passwordChange = async (req, user) => {
+    const password = req.body.password;
+    console.log({newPass: password});
     const response = bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
         .then(hashedPassword => {
+            console.log({hashedPass: hashedPassword});
             return User.updateOne({ _id: user._id }, { password: hashedPassword });
         });
 

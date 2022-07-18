@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 const findOrCreate = require('mongoose-findorcreate');
-const ObjectId = mongoose.Types.ObjectId;
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const userSchema = mongoose.Schema({
     username: {
@@ -18,10 +18,10 @@ const userSchema = mongoose.Schema({
     googleId: String,
     facebookId: String,
 
-    favouriteArticles: [{
-        type: ObjectId,
+    favouriteArticles: {
+        type: [ObjectId],
         ref: 'Article'
-    }],
+    },
     following: {
         type: Number,
         default: 0

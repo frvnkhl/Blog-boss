@@ -9,6 +9,7 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import NightlifeIcon from '@mui/icons-material/Nightlife';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import BrushIcon from '@mui/icons-material/Brush';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 const Sidebar = (props) => {
 
@@ -23,6 +24,12 @@ const Sidebar = (props) => {
             <Typography variant='h4'>
                 Categories
             </Typography>
+            <ListItemButton onClick={handleFilterChange} >
+                <ListItemIcon>
+                    <FormatListBulletedIcon color='secondary' />
+                </ListItemIcon>
+                <ListItemText primary="All" />
+            </ListItemButton>
             <ListItemButton onClick={handleFilterChange} >
                 <ListItemIcon>
                     <DinnerDiningIcon color='error' />

@@ -38,14 +38,13 @@ const LoginForm = () => {
         DataService.loginUser(login).then(res => {
             console.log({response: res});
             setMessage({
-                message: res.data,
+                message: res.message,
                 colour: 'success'
             });
             router.reload();
         }).catch(err => {
-            console.log({error: err});
             setMessage({
-                message: err.data,
+                message: err.response.data.message,
                 colour: 'error'
             });
         });

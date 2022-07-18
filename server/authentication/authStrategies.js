@@ -51,14 +51,14 @@ passport.use('login', new LocalStrategy({
         try {
             User.findOne({ username: username }).then(user => {
                 if (!user) {
-                    return done(null, false, { message: 'bad username' });
+                    return done(null, false, { message: 'Bad username' });
                 }
                 bcrypt.compare(password, user.password).then(res => {
                     if (!res) {
-                        console.log('passwords do not match');
-                        return done(null, false, { message: 'passwords do not match' });
+                        console.log('incorrect password');
+                        return done(null, false, { message: 'Incorrect password' });
                     }
-                    console.log('user found & authenticated');
+                    console.log('User found & authenticated');
                     return done(null, user);
                 });
             });

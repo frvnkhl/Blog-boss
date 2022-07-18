@@ -118,6 +118,7 @@ const Navbar = () => {
                     aria-controls="primary-search-account-menu"
                     aria-haspopup="true"
                     color="inherit"
+                    href="/profile"
                 >
                     <AccountCircle />
                 </IconButton>
@@ -195,7 +196,7 @@ const Navbar = () => {
                                         <IconButton
                                             size="large"
                                             color="inherit"
-                                            onClick={() => router.push('/article/new')}
+                                            href="/article/new"
                                         >
                                             <EditIcon />
                                         </IconButton>
@@ -215,6 +216,7 @@ const Navbar = () => {
                                             edge="end"
                                             aria-label="account of current user"
                                             color="inherit"
+                                            href="/profile"
                                         >
                                             <AccountCircle />
                                         </IconButton>

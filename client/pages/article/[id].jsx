@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { Box, Typography, CircularProgress, Divider, Chip, Avatar, IconButton, Card, CardContent, CardActions, TextField, Button } from "@mui/material";
 import Navbar from "../../components/Navbar";
@@ -65,6 +65,14 @@ const Article = () => {
         DataService.likeArticle(articleId, localStorage.getItem('JWT')).then(res =>
             window.location.reload()
         );
+    };
+
+    const handleCategoryClick = (event) => {
+        const category = event.target.innerText;
+        router.push({
+            pathname: '/',
+            query: { category: category }
+        }, '/');
     }
 
     return (
@@ -112,7 +120,7 @@ const Article = () => {
                                 <Typography variant="h5">Categories</Typography>
                                 {article !== '' &&
                                     article.category.map((category, index) => (
-                                        <Chip key={index} sx={{ mr: 2, mt: 2 }} label={category} color="success" clickable />
+                                        <Chip key={index} sx={{ mr: 2, mt: 2 }} label={category} color="success" clickable onClick={handleCategoryClick} />
                                     ))
                                 }
                             </Box>

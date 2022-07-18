@@ -12,7 +12,7 @@ exports.registerUser = (req, res, next) => {
             res.status(400).send(info.message);
         } else {
             await UserService.registerUser(req, user);
-            res.status(200).send({ message: 'user created' });
+            res.status(200).send({ message: 'User created' });
         }
     })(req, res, next);
 };
@@ -35,7 +35,7 @@ exports.loginUser = (req, res, next) => {
             res.status(200).send({
                 auth: true,
                 token: token,
-                message: 'user found & logged in',
+                message: 'User found & logged in',
             });
         };
 
@@ -94,8 +94,7 @@ exports.changePassword = (req, res, next) => {
             console.log({ authError: info.message });
             res.status(400).send(info.message);
         } else {
-            const newPassword = req.body.password;
-            const response = await UserService.passwordChange(user, newPassword);
+            const response = await UserService.passwordChange(req, user);
             if (response.acknowledged) {
                 res.status(200).send({ message: 'Password changes successfully!' });
             } else {
