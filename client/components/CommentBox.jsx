@@ -1,7 +1,8 @@
-import { Box, Typography, Divider, IconButton, Card, CardContent, CardActions, TextField, Button } from "@mui/material";
+import { Box, Typography, Divider, IconButton, Card, CardContent, CardActions, TextField, Button, Link } from "@mui/material";
 import DataService from "../services/DataService";
 import { useState } from "react";
 import { Send, ThumbUp, ThumbDown, Close } from "@mui/icons-material";
+import { useRouter } from "next/router";
 
 const CommentBox = (props) => {
     const [newComment, setNewComment] = useState({
@@ -10,6 +11,7 @@ const CommentBox = (props) => {
     const [commentAuthors, setCommentAuthors] = useState([]);
     const [article, setArticle] = useState(props.article);
     const [user, setUser] = useState(props.user);
+    const router = useRouter();
 
     const getUserById = (userId) => {
         DataService.getUser(userId, localStorage.getItem('JWT')).then(res => {
@@ -70,8 +72,10 @@ const CommentBox = (props) => {
                     article.comments.map((comment, index) => (
                         <Card key={index} sx={{ mb: 3 }}>
                             <CardContent>
-                                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                    {getUsername(comment.author)}
+                                <Typography sx={{ fontSize: 14, '&:hover': { width: '120%' } }} color="text.secondary" gutterBottom>
+                                    <Link underline='hover' href={`/profile/${comment.author}`}>
+                                        {getUsername(comment.author)}
+                                    </Link>
                                 </Typography>
                                 <Typography variant="p">
                                     {comment.comment}
@@ -91,7 +95,7 @@ const CommentBox = (props) => {
                                             </IconButton>
                                         }
                                     </Box>
-                                    {comment.author === user._id || comment.author === article.author &&
+                                    {comment.author === user.id || comment.author === article.author &&
                                         <IconButton color="error" onClick={() => handleCommentDelete(comment._id)} >
                                             <Close />
                                         </IconButton>

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const findOrCreate = require('mongoose-findorcreate');
-const ObjectId = mongoose.Types.ObjectId;
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const followerSchema = mongoose.Schema({
     userId: {

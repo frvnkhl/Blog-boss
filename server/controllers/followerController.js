@@ -10,7 +10,8 @@ exports.changeFollowingStatus = async (req, res, next) => {
             console.error({ authError: info.message });
             res.status(403).send(info.message);
         } else {
-            const userToFollow = req.params.userId;
+            console.log({params: req.params});
+            const userToFollow = req.params.id;
             await FollowerService.changeFollowStatus(user, userToFollow);
             res.status(200).send({ message: 'success' })
         }
@@ -26,7 +27,7 @@ exports.showFollowings = async (req, res, next) => {
             console.error({ authError: info.message });
             res.status(403).send(info.message);
         } else {
-            const followingsOfUser = req.params.userId;
+            const followingsOfUser = req.params.id;
             const followings = await FollowerService.showFollowings(followingsOfUser);
             res.status(200).send(followings);
         }
@@ -42,7 +43,7 @@ exports.showFollowers = async (req, res, next) => {
             console.error({ authError: info.message });
             res.status(403).send(info.message);
         } else {
-            const followersOfUser = req.params.userId;
+            const followersOfUser = req.params.id;
             const followers = await FollowerService.showFollowers(followersOfUser);
             res.status(200).send(followers);
         }

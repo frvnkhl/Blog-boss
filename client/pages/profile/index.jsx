@@ -10,7 +10,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import ArticlePreview from "../../components/ArticlePreview";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import { deleteArticle } from "../../../server/services/articleService";
 import ChangePasswordForm from "../../components/ChangePasswordForm";
 
 const Profile = () => {

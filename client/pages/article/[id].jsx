@@ -75,6 +75,10 @@ const Article = () => {
         }, '/');
     }
 
+    const handleUserProfileRedirect = (id) => {
+        router.push(`/profile/${id}`);
+    }
+
     return (
         <>
             <Navbar />
@@ -98,6 +102,7 @@ const Article = () => {
                                     label={`By ${author.username}`}
                                     sx={{ width: '200px', height: '40px', }}
                                     clickable
+                                    onClick={() => handleUserProfileRedirect(author.id)}
                                 />
                             </Box>
 

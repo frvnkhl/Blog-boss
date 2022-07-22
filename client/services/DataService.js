@@ -82,6 +82,24 @@ const changePassword = async (password, accessToken) => {
     });
 };
 
+const getUserFollowers = async (id, accessToken) => {
+    return await server.get(`/follow/${id}/allFollowers`, {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
+const followUser = async (id, accessToken) => {
+    return await server.patch(`/follow/${id}`, null, {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
+const getUserFollowings = async (id, accessToken) => {
+    return await server.get(`/follow/${id}/allFollowings`, {
+        withCredentials: true, headers: { Authorization: `JWT ${accessToken}` }
+    });
+};
+
 const DataService = {
     registerUser,
     loginUser,
@@ -96,6 +114,9 @@ const DataService = {
     deleteComment,
     deleteArticle,
     changePassword,
+    getUserFollowers,
+    followUser,
+    getUserFollowings,
 };
 
 export default DataService;
