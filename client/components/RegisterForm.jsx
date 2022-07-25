@@ -1,5 +1,6 @@
 import { FacebookRounded, Google, Visibility, VisibilityOff } from "@mui/icons-material";
 import { FormControl, TextField, Input, InputLabel, InputAdornment, IconButton, Box, Button, Alert } from "@mui/material";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import DataService from "../services/DataService";
 
@@ -16,6 +17,7 @@ const RegisterForm = () => {
     });
 
     const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -52,6 +54,14 @@ const RegisterForm = () => {
         });
     };
 
+    const handleGoogleSignUp = async () => {
+        router.push('http://localhost:6299/user/auth/google');
+    };
+
+    const handleFacebookSignUp = async () => {
+        router.push('http://localhost:6299/user/auth/facebook');
+    };
+
     return (
         <Box sx={{ width: '40%', m: 5, p: 2, display: 'grid', textAlign: 'center', boxShadow: 2 }}>
             {message.message !== '' && <Alert severity={message.colour}>{message.message}</Alert>}
@@ -84,11 +94,11 @@ const RegisterForm = () => {
                 />
             </FormControl>
             <Button variant="contained" sx={{ m: 1 }} color="success" onClick={handleUserSubmit}>Register</Button>
-            <Button variant="contained" sx={{ m: 1 }} color="primary" startIcon={<Google />}>Register with Google</Button>
+            <Button variant="contained" sx={{ m: 1 }} color="primary" onClick={handleGoogleSignUp} startIcon={<Google />}>Register with Google</Button>
             <Button variant="contained" sx={{
                 m: 1,
                 backgroundColor: '#4267B2'
-            }} startIcon={<FacebookRounded />}>Register with Facebook</Button>
+            }} onClick={handleFacebookSignUp} startIcon={<FacebookRounded />}>Register with Facebook</Button>
 
         </Box>
     )

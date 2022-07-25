@@ -7,6 +7,7 @@ const db = require('./database/db');
 const userRoutes = require('./routes/userRoutes');
 const articleRoutes = require('./routes/articleRoutes');
 const followerRoutes = require('./routes/followerRoutes');
+const session = require('express-session');
 
 //app config
 const app = express();
@@ -15,6 +16,11 @@ const port = process.env.PORT || 6299;
 //middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(session({
+    resave: false,
+    saveUninitialized: true,
+    secret: 'secret',
+}));
 app.use(cors({
     credentials: true,
     origin: process.env.CLIENT_URL,
@@ -22,6 +28,7 @@ app.use(cors({
 }));
 app.use(passport.initialize());
 app.use(express.json());
+app.use(passport.session());
 app.use((err, req, res, next) => {
     return res.json({ errorMessage: err.message });
 });

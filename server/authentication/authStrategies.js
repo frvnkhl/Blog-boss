@@ -2,6 +2,8 @@ const { User } = require('../models/userModel');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const JWTstrategy = require('passport-jwt').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 const bcrypt = require('bcrypt');
 const BCRYPT_SALT_ROUNDS = 12;
@@ -99,3 +101,37 @@ passport.deserializeUser((id, done) => {
         done(err, user);
     });
 });
+
+//passport strategy using Google
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "/user/auth/google/blog-boss",
+    proxy: true
+},
+    (_accessToken, _refreshToken, profile, cb) => {
+        User.findOrCreate({
+            googleId: profile.id, email: profile.emails[0].value, username: (profile.displayName + profile.id.substring(0, 5)).replace(/ /g, "_")
+        }, (err, user) => {
+            return cb(err, user);
+        });
+    }
+));
+
+//passport strategy using Facebook
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: "/user/auth/facebook/callback",
+    profileFields: ['id', 'displayName', 'email'],
+    proxy: true
+},
+    (_accessToken, _refreshToken, profile, cb) => {
+        User.findOrCreate({
+            facebookId: profile.id, email: profile.emails[0].value, username: (profile.displayName + profile.id.substring(0, 5)).replace(/ /g, "_")
+        }, (err, user) => {
+            return cb(err, user);
+        });
+    }
+));
+

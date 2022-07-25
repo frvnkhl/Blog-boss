@@ -33,7 +33,7 @@ const NewArticle = () => {
 
     return (
         <>
-            <Navbar />
+            <Navbar loggedIn={loggedIn} />
             <Grid
                 container
                 spacing={0}

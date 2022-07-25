@@ -88,7 +88,7 @@ const UserProfile = () => {
 
     return (
         <>
-            <Navbar />
+            <Navbar loggedIn={loggedIn} />
             <Box sx={{ mx: 'auto', my: 5, width: '80%', px: 10, py: 3, display: 'grid', boxShadow: 2 }}>
                 {loading ?
                     <CircularProgress sx={{ mx: 'auto' }} /> :

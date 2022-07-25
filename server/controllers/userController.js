@@ -122,6 +122,6 @@ exports.changeAvatar = (req, res, next) => {
     })(req, res, next);
 };
 
-
-
-
+exports.authGoogleCallback = (req, res, next) => {
+    
+};

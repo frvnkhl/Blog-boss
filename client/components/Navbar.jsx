@@ -6,9 +6,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import TokenService from "../services/TokenService";
 import Link from "next/link";
 import SearchResults from "./SearchResults";
 
@@ -52,8 +51,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const Navbar = () => {
-    const [loggedIn, setLoggedIn] = useState();
+const Navbar = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const [search, setSearch] = useState('');
@@ -62,23 +60,6 @@ const Navbar = () => {
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const checkIfLoggedIn = useCallback(() => {
-        //If not passed from the url, it will search for token in the local storage
-        let accessToken = localStorage.getItem('JWT');
-        if (accessToken === null || !TokenService.isTokenValid(accessToken)) {
-            setLoggedIn(false);
-        } else {
-            setLoggedIn(true);
-        }
-    },
-        [],
-    )
-
-    //Check the JWT token for authorisation in the first render
-    useEffect(() => {
-        checkIfLoggedIn();
-    }, [checkIfLoggedIn])
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -183,7 +164,7 @@ const Navbar = () => {
 
     return (
         <Box>
-            {loggedIn ?
+            {props.loggedIn ?
                 <>
                     <Box sx={{ flexGrow: 1 }}>
                         <AppBar position="static" sx={{ bgcolor: '#1e1e1e' }}>

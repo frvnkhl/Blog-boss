@@ -55,6 +55,14 @@ const LoginForm = () => {
         });
     };
 
+    const handleGoogleSignIn = async () => {
+        router.push('http://localhost:6299/user/auth/google');
+    };  
+    
+    const handleFacebookSignIn = async () => {
+        router.push('http://localhost:6299/user/auth/facebook');
+    };
+
     return (
         <Box sx={{ width: '40%', m: 5, p: 2, display: 'grid', textAlign: 'center', boxShadow: 2 }}>
             {message.message !== '' && <Alert severity={message.colour}>{message.message}</Alert>}
@@ -84,11 +92,11 @@ const LoginForm = () => {
                 />
             </FormControl>
             <Button variant="contained" sx={{ m: 1 }} color="success" onClick={handleUserSubmit}>Login</Button>
-            <Button variant="contained" sx={{ m: 1 }} color="primary" startIcon={<Google />}>Login with Google</Button>
+            <Button variant="contained" sx={{ m: 1 }} color="primary" onClick={handleGoogleSignIn} startIcon={<Google />}>Login with Google</Button>
             <Button variant="contained" sx={{
                 m: 1,
                 backgroundColor: '#4267B2'
-            }} startIcon={<FacebookRounded />}>Login with Facebook</Button>
+            }} onClick={handleFacebookSignIn} startIcon={<FacebookRounded />}>Login with Facebook</Button>
 
         </Box>
     )

@@ -22,27 +22,35 @@ const Home = () => {
   const router = useRouter();
 
   const checkIfLoggedIn = useCallback(() => {
-    //If not passed from the url, it will search for token in the local storage
-    const accessToken = localStorage.getItem('JWT');
-    if (accessToken === null || !TokenService.isTokenValid(accessToken)) {
-      setTimeout(() => setLoading(false), 2000);
-      setLoggedIn(false);
-    } else {
-      setLoggedIn(true);
-      DataService.getCurrentUser(accessToken).then(res => {
-        console.log({ user: res.data });
-        setUser(res.data);
-      });
-      if (router.query.category !== undefined) {
-        setFilter(router.query.category)
+    if(router.isReady) {
+       //Check if token was passed from 3rd party login
+       const {token} = router.query;
+       if(token !== undefined) {
+        localStorage.setItem('JWT', token);
+        router.push('/');
+       }
+      //If not passed from the url, it will search for token in the local storage
+      const accessToken = localStorage.getItem('JWT');
+      if (accessToken === null || !TokenService.isTokenValid(accessToken)) {
+        setTimeout(() => setLoading(false), 2000);
+        setLoggedIn(false);
+      } else {
+        setLoggedIn(true);
+        DataService.getCurrentUser(accessToken).then(res => {
+          console.log({ user: res.data });
+          setUser(res.data);
+        });
+        if (router.query.category !== undefined) {
+          setFilter(router.query.category)
+        }
+        DataService.getAllArticles(accessToken).then(res => {
+          setArticles(res.data.articles);
+        });
+        setTimeout(() => setLoading(false), 2000);
       }
-      DataService.getAllArticles(accessToken).then(res => {
-        setArticles(res.data.articles);
-      });
-      setTimeout(() => setLoading(false), 2000);
-    }
+    }  
   },
-    [],
+    [router],
   );
 
   useEffect(() => {
@@ -88,7 +96,7 @@ const Home = () => {
   return (
     <>
       <Head>Welcome to Blog Boss</Head>
-      <Navbar />
+      <Navbar loggedIn={loggedIn} />
       {loading ?
         <CircularProgress sx={{ mx: 'auto' }} /> :
         <>
