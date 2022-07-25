@@ -7,6 +7,7 @@ import TokenService from "../../services/TokenService";
 import parse from "html-react-parser"
 import { ThumbDown, ThumbUp } from "@mui/icons-material";
 import CommentBox from "../../components/CommentBox";
+import SearchResults from "../../components/SearchResults";
 
 const Article = () => {
     const [loggedIn, setLoggedIn] = useState();
@@ -15,6 +16,11 @@ const Article = () => {
     const [article, setArticle] = useState('');
     const [author, setAuthor] = useState('');
     const [user, setUser] = useState('');
+    const [open, setOpen] = useState(false);
+    const [search, setSearch] = useState('');
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const articleId = router.query.id;
 
@@ -75,6 +81,12 @@ const Article = () => {
         }, '/');
     }
 
+    const handleTagClick = (event) => {
+        const tag = event.target.innerText;
+        setSearch(tag);
+        handleOpen();
+    }
+
     const handleUserProfileRedirect = (id) => {
         router.push(`/profile/${id}`);
     }
@@ -112,15 +124,16 @@ const Article = () => {
                             {article !== '' && parse(article.content)}
                         </Box>
                         <Divider sx={{ my: 3 }} />
-                        <Box >
+                        <Box>
                             <Box sx={{ display: 'inline-block' }}>
                                 <Typography variant="h5">Tags</Typography>
                                 {article !== '' &&
                                     article.tags.map((tag, index) => (
-                                        <Chip key={index} sx={{ mr: 2, mt: 2 }} label={tag} color="primary" clickable />
+                                        <Chip key={index} sx={{ mr: 2, mt: 2 }} label={tag} color="primary" clickable onClick={handleTagClick}/>
                                     ))
                                 }
                             </Box>
+                            <SearchResults open={open} handleClose={handleClose} search={search} />
                             <Box sx={{ display: 'inline-block', ml: 3 }}>
                                 <Typography variant="h5">Categories</Typography>
                                 {article !== '' &&

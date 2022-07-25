@@ -10,6 +10,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import TokenService from "../services/TokenService";
 import Link from "next/link";
+import SearchResults from "./SearchResults";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -55,7 +56,12 @@ const Navbar = () => {
     const [loggedIn, setLoggedIn] = useState();
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+    const [search, setSearch] = useState('');
+    const [open, setOpen] = useState(false);
     const router = useRouter();
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const checkIfLoggedIn = useCallback(() => {
         //If not passed from the url, it will search for token in the local storage
@@ -92,6 +98,17 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem('JWT');
         router.push('/').then(router.reload());
+    }
+
+    const handleChange = (event) => {
+        const {value} = event.target;
+        setSearch(value);
+    }
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            handleOpen();
+        }
     }
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -188,8 +205,12 @@ const Navbar = () => {
                                     <StyledInputBase
                                         placeholder="Search…"
                                         inputProps={{ 'aria-label': 'search' }}
+                                        onChange={handleChange}
+                                        value={search}
+                                        onKeyDown={handleKeyDown}
                                     />
                                 </Search>
+                                <SearchResults open={open} handleClose={handleClose} search={search} />
                                 <Box sx={{ flexGrow: 1 }} />
                                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                                     <Tooltip title="Write new article">
