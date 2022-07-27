@@ -22,7 +22,6 @@ const Profile = () => {
     const router = useRouter();
 
     const checkIfLoggedIn = useCallback(() => {
-        //If not passed from the url, it will search for token in the local storage
         setLoading(true);
         let accessToken = localStorage.getItem('JWT');
         if (accessToken === null || !TokenService.isTokenValid(accessToken)) {
@@ -45,6 +44,7 @@ const Profile = () => {
         checkIfLoggedIn();
     }, [checkIfLoggedIn]);
 
+    //Check and set articles written and liked by user
     useEffect(() => {
         let accessToken = localStorage.getItem('JWT');
         DataService.getAllArticles(accessToken).then(res => {
@@ -62,30 +62,30 @@ const Profile = () => {
         DataService.likeArticle(articleId, localStorage.getItem('JWT')).then(res =>
             window.location.reload()
         )
-    }
+    };
 
     const deleteArticle = (articleId) => {
         DataService.deleteArticle(articleId, localStorage.getItem('JWT')).then(res =>
             window.location.reload()
         )
-    }
+    };
 
     const handleOpen = () => setOpen(true);
-
 
     return (
         <>
             <Navbar loggedIn={loggedIn} />
-            <Box sx={{ mx: 'auto', my: 5, width: '80%', px: 10, py: 3, display: 'grid', boxShadow: 2 }}>
+            <Box sx={{ mx: 'auto', my: 5, width: { xs: '95%', md: '80%' }, px: { xs: 1, md: 10 }, py: 3, display: 'grid', boxShadow: 2 }}>
                 {loading ?
                     <CircularProgress sx={{ mx: 'auto' }} /> :
                     <>
                         <Box sx={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(4, 1fr)',
-                            gridTemplateAreas: `"side main main main"`
+                            display: { xs: 'flex', md: 'grid' },
+                            flexDirection: { xs: 'column' },
+                            gridTemplateColumns: { md: 'repeat(4, 1fr)' },
+                            gridTemplateAreas: { md: `"side main main main"` }
                         }}>
-                            <Box sx={{ gridArea: 'side', p: 3, textAlign: 'center' }}>
+                            <Box sx={{ gridArea: { md: 'side' }, p: { xs: 1, md: 3 }, textAlign: 'center' }}>
                                 <Avatar sx={{ width: 150, height: 150, bgcolor: indigo[600], mb: 1, mx: 'auto' }} />
                                 <Typography>Followers</Typography>
                                 <Typography fontStyle='bold'>{user.followers}</Typography>
@@ -94,8 +94,8 @@ const Profile = () => {
                                 <Button onClick={handleOpen}>Change your password</Button>
                                 <ChangePasswordForm open={open} setOpen={setOpen} />
                             </Box>
-                            <Box sx={{ gridArea: 'main', p: 3 }}>
-                                <Typography variant="h3">{user.username}</Typography>
+                            <Box sx={{ gridArea: { md: 'main' }, p: { xs: 1, md: 3 } }}>
+                                <Typography variant='h4'>{user.username}</Typography>
                                 <Divider sx={{ mb: 3 }} />
                                 <Typography variant="h5" sx={{ mb: 1 }}>My articles</Typography>
                                 {
@@ -108,7 +108,7 @@ const Profile = () => {
                                             {
                                                 userArticles.map((article, index) => (
                                                     <>
-                                                        <ArticlePreview key={index} article={article} />
+                                                        <ArticlePreview passedKey={index} key={index} article={article} />
                                                         <Button variant="text" color="error" onClick={() => deleteArticle(article._id)} startIcon={<DeleteIcon />}>{`Delete "${article.title}" article`}</Button>
                                                     </>
                                                 ))
@@ -126,7 +126,7 @@ const Profile = () => {
                                             {
                                                 likedArticles.map((article, index) => (
                                                     <>
-                                                        <ArticlePreview key={index} article={article} />
+                                                        <ArticlePreview passedKey={index} key={index} article={article} />
                                                         <Button variant="text" color="error" onClick={() => dislikeArticle(article._id)} startIcon={<ThumbDownIcon />}>{`Unlike "${article.title}" article`}</Button>
                                                     </>
                                                 ))
@@ -139,7 +139,7 @@ const Profile = () => {
                 }
             </Box>
         </>
-    )
-}
+    );
+};
 
 export default Profile;

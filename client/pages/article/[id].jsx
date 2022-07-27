@@ -1,10 +1,10 @@
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import { Box, Typography, CircularProgress, Divider, Chip, Avatar, IconButton, Card, CardContent, CardActions, TextField, Button } from "@mui/material";
+import { Box, Typography, CircularProgress, Divider, Chip, Avatar, IconButton } from "@mui/material";
 import Navbar from "../../components/Navbar";
 import DataService from "../../services/DataService";
 import TokenService from "../../services/TokenService";
-import parse from "html-react-parser"
+import parse, { attributesToProps } from "html-react-parser"
 import { ThumbDown, ThumbUp } from "@mui/icons-material";
 import CommentBox from "../../components/CommentBox";
 import SearchResults from "../../components/SearchResults";
@@ -24,8 +24,17 @@ const Article = () => {
 
     const articleId = router.query.id;
 
+    //Options to resize every added picture, so the page renders correctly on all screen sizes
+    const options = {
+        replace: domNode => {
+            if (domNode.attribs && domNode.name === 'img') {
+                const props = attributesToProps(domNode.attribs);
+                return <img width='300' {...props}/>
+            }
+        }
+    };
+
     const checkIfLoggedIn = useCallback(() => {
-        //If not passed from the url, it will search for token in the local storage
         if (router.isReady) {
             console.log({ articleId: articleId });
             let accessToken = localStorage.getItem('JWT');
@@ -65,7 +74,7 @@ const Article = () => {
         DataService.getUser(userId, localStorage.getItem('JWT')).then(res => {
             setAuthor(res.data);
         });
-    }
+    };
 
     const likeArticle = () => {
         DataService.likeArticle(articleId, localStorage.getItem('JWT')).then(res =>
@@ -79,22 +88,22 @@ const Article = () => {
             pathname: '/',
             query: { category: category }
         }, '/');
-    }
+    };
 
     const handleTagClick = (event) => {
         const tag = event.target.innerText;
         setSearch(tag);
         handleOpen();
-    }
+    };
 
     const handleUserProfileRedirect = (id) => {
         router.push(`/profile/${id}`);
-    }
+    };
 
     return (
         <>
             <Navbar loggedIn={loggedIn}/>
-            <Box sx={{ mx: 'auto', my: 5, width: '80%', px: 10, py: 3, display: 'grid', boxShadow: 2 }}>
+            <Box sx={{ mx: 'auto', my: 5, width: {xs: '95%', md: '80%'}, px: {xs: 2, md: 5}, py: 3, display: 'grid', boxShadow: 2 }}>
                 {loading ?
                     <CircularProgress sx={{ mx: 'auto' }} />
                     :
@@ -112,7 +121,7 @@ const Article = () => {
                                 <Chip
                                     avatar={<Avatar>{author.username.slice(0, 1).toUpperCase()}</Avatar>}
                                     label={`By ${author.username}`}
-                                    sx={{ width: '200px', height: '40px', }}
+                                    sx={{ width: '200px', height: '40px', mx: 'auto'}}
                                     clickable
                                     onClick={() => handleUserProfileRedirect(author.id)}
                                 />
@@ -120,8 +129,8 @@ const Article = () => {
 
                         }
                         <Divider sx={{ my: 3 }} />
-                        <Box>
-                            {article !== '' && parse(article.content)}
+                        <Box sx={{width: {xs:'95%', md: '80%'}}}>
+                            {article !== '' && parse(article.content, options)}
                         </Box>
                         <Divider sx={{ my: 3 }} />
                         <Box>
@@ -134,7 +143,7 @@ const Article = () => {
                                 }
                             </Box>
                             <SearchResults open={open} handleClose={handleClose} search={search} />
-                            <Box sx={{ display: 'inline-block', ml: 3 }}>
+                            <Box sx={{ display: 'inline-block', ml: {md: 3}, mt: {xs: 2} }}>
                                 <Typography variant="h5">Categories</Typography>
                                 {article !== '' &&
                                     article.category.map((category, index) => (
@@ -142,7 +151,7 @@ const Article = () => {
                                     ))
                                 }
                             </Box>
-                            <Box sx={{ display: 'inline-block', float: 'right' }}>
+                            <Box sx={{ display: 'inline-block', float: 'right', mt: { xs: 2 } }}>
                                 <Typography variant="h5">Likes</Typography>
                                 {article !== '' &&
                                     <Box sx={{ display: 'inline' }}>
@@ -169,7 +178,7 @@ const Article = () => {
             }
 
         </>
-    )
-}
+    );
+};
 
 export default Article;

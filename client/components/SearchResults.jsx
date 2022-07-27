@@ -12,8 +12,7 @@ const SearchResults = (props) => {
                 (article.title.includes(props.search)) || (article.content.includes(props.search)));
             setSearchResults(filteredArticles);
         });
-    }, [props.search])
-
+    }, [props.search]);
 
     return (
         <Modal
@@ -23,9 +22,9 @@ const SearchResults = (props) => {
             <Box sx={{
                 bgcolor: 'background.paper',
                 top: '20vh',
-                left: '20vw',
+                left: { xs: '3vw', md: '20vw' },
                 position: 'absolute',
-                width: '60vw',
+                width: { xs: '95%', md: '60vw' },
                 p: 3,
                 boxShadow: 15,
                 maxHeight: '60vh',
@@ -36,15 +35,15 @@ const SearchResults = (props) => {
                     <>
                         <Typography variant="h4">{`Search results for "${props.search}"`}</Typography>
                         {
-                            searchResults.map(article => (
-                                <ArticlePreview article={article} />
+                            searchResults.map((article, index) => (
+                                <ArticlePreview passedKey={index} key={index} article={article} />
                             ))
                         }
                     </>
                 }
             </Box>
         </Modal>
-    )
+    );
 };
 
 export default SearchResults;

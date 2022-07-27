@@ -6,11 +6,11 @@ const mongoose = require('mongoose');
 exports.changeFollowStatus = async (user, userId) => {
     console.log({ userId: userId, user: user._id });
     await Following.findOrCreate({ userId: user._id }, async (err, following, created) => {
-        console.log({following: following});
+        console.log({ following: following });
         if (!err && !isFollowing(following, userId)) {
             following.following.push(mongoose.Types.ObjectId(userId));
             following.save();
-            await User.updateOne({'_id': userId}, {$inc: {followers: 1}});
+            await User.updateOne({ '_id': userId }, { $inc: { followers: 1 } });
         } else {
             const followingIndex = following.following.indexOf(mongoose.Types.ObjectId(userId));
             following.following.splice(followingIndex, 1);
@@ -19,7 +19,7 @@ exports.changeFollowStatus = async (user, userId) => {
         }
     });
     await Follower.findOrCreate({ userId: mongoose.Types.ObjectId(userId) }, async (err, follower, created) => {
-        console.log({follower: follower});
+        console.log({ follower: follower });
         if (!err && !isFollower(follower, user._id)) {
             follower.follower.push(user._id);
             follower.save();
@@ -41,7 +41,7 @@ exports.showFollowings = async (userId) => {
 
 exports.showFollowers = async (userId) => {
     const followers = await Follower.findOrCreate({ userId: mongoose.Types.ObjectId(userId) });
-    console.log({followers: followers});
+    console.log({ followers: followers });
 
     return followers.doc.follower;
 };
@@ -52,4 +52,4 @@ const isFollowing = (newFollowing, userId) => {
 
 const isFollower = (newFollower, userId) => {
     return newFollower.follower.includes(userId);
-}
+};

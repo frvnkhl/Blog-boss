@@ -5,7 +5,7 @@ const isTokenValid = (token) => {
     const decodedToken = jwtDecode(token);
 
     return decodedToken.exp * 1000 > currentDate.getTime();
-}
+};
 
 const TokenService = { isTokenValid };
 

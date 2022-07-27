@@ -25,9 +25,7 @@ router.get('/auth/google/blog-boss', passport.authenticate('google', { session: 
     });
 
 //facebook login/registration routes
-router.get('/auth/facebook',
-    passport.authenticate('facebook', { scope: ['email'] }));
-
+router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 router.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/' }),
     (req, res) => {

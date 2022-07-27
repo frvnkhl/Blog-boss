@@ -9,12 +9,10 @@ const ChangePasswordForm = (props) => {
         newPassword: '',
         newPasswordConfirm: '',
     });
-
     const [showPassword, setShowPassword] = useState({
         newPassword: false,
         newPasswordConfirm: false,
     });
-
     const [formProcessed, setFormProcessed] = useState({
         color: '',
         message: '',
@@ -38,7 +36,7 @@ const ChangePasswordForm = (props) => {
                 return { ...prevValue, newPasswordConfirm: !showPassword.newPasswordConfirm }
             })
         }
-    }
+    };
 
     const handlePasswordChange = () => {
         if (newPass.newPassword !== newPass.newPasswordConfirm) {
@@ -48,8 +46,8 @@ const ChangePasswordForm = (props) => {
                 open: true
             })
         } else {
-            console.log({newPass: newPass.newPassword});
-            DataService.changePassword({password: newPass.newPassword}, localStorage.getItem('JWT')).then(res => {
+            console.log({ newPass: newPass.newPassword });
+            DataService.changePassword({ password: newPass.newPassword }, localStorage.getItem('JWT')).then(res => {
                 let colour;
                 res.status === 200 ? colour = 'success' : colour = 'error';
                 setFormProcessed({
@@ -64,8 +62,7 @@ const ChangePasswordForm = (props) => {
             window.location.reload();
         }, 3000);
 
-    }
-
+    };
 
     return (
         <Modal
@@ -75,7 +72,7 @@ const ChangePasswordForm = (props) => {
             <Box sx={{
                 mx: 'auto',
                 mt: '30vh',
-                width: '40vw',
+                width: { xs: '95vw', md: '40vw' },
                 bgcolor: 'background.paper',
                 p: 3,
                 borderRadius: 2,

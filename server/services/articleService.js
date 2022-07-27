@@ -2,7 +2,6 @@ const { Article } = require('../models/articleModel');
 const { Comment } = require('../models/commentModel');
 const { User } = require('../models/userModel');
 const mongoose = require('mongoose');
-const util = require('util');
 
 exports.createArticle = (article, user) => {
     const newArticle = new Article({
@@ -48,7 +47,7 @@ exports.deleteComment = async (id, user, commentId) => {
     const article = await Article.findById(mongoose.Types.ObjectId(id));
     const allComments = article.comments;
     const commentToDelete = allComments.filter(comment => comment.id === commentId);
-    console.log({article: article, userId: user._id, comment: commentToDelete[0]});
+    console.log({ article: article, userId: user._id, comment: commentToDelete[0] });
     if (commentToDelete[0].author.equals(user._id) || commentToDelete[0].author.equals(article.author)) {
         const commentIndex = article.comments.indexOf(commentToDelete[0]);
         article.comments.splice(commentIndex, 1);
@@ -87,7 +86,7 @@ exports.likeComment = async (id, commentId, user) => {
     const article = await Article.findById(mongoose.Types.ObjectId(id));
     const allComments = article.comments;
     const comment = allComments.filter(comment => comment.id === commentId);
-    console.log({comment: comment[0]});
+    console.log({ comment: comment[0] });
     if (isCommentLiked(comment[0], user)) {
         const userIndex = comment[0].likes.indexOf(user._id);
         comment[0].likes.splice(userIndex, 1);

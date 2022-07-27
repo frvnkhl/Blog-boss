@@ -7,7 +7,7 @@ const ArticlePreview = (props) => {
 
     return (
         <>
-            <Card sx={{ my: 3 }}>
+            <Card sx={{ my: 3 }} key={props.passedKey}>
                 <CardContent>
                     <Typography variant='h4' fontWeight='bold' mb={3}>
                         {article.title}

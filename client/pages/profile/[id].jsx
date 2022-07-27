@@ -21,7 +21,6 @@ const UserProfile = () => {
     const profileId = router.query.id;
 
     const checkIfLoggedIn = useCallback(() => {
-        //If not passed from the url, it will search for token in the local storage
         if (router.isReady) {
             let accessToken = localStorage.getItem('JWT');
             if (accessToken === null || !TokenService.isTokenValid(accessToken)) {
@@ -50,6 +49,7 @@ const UserProfile = () => {
         checkIfLoggedIn();
     }, [checkIfLoggedIn]);
 
+    //Find and set articles written and liked by User
     useEffect(() => {
         const accessToken = localStorage.getItem('JWT');
         DataService.getAllArticles(accessToken).then(res => {
@@ -64,6 +64,7 @@ const UserProfile = () => {
         setLoading(false);
     }, [profile, user]);
 
+    //Check whether the user has followed this user or not
     useEffect(() => {
         if (!router.isReady) return;
         const accessToken = localStorage.getItem('JWT');
@@ -84,21 +85,22 @@ const UserProfile = () => {
         });
         setLoading(true);
         window.location.reload();
-    }
+    };
 
     return (
         <>
             <Navbar loggedIn={loggedIn} />
-            <Box sx={{ mx: 'auto', my: 5, width: '80%', px: 10, py: 3, display: 'grid', boxShadow: 2 }}>
+            <Box sx={{ mx: 'auto', my: 5, width: { xs: '95%', md: '80%' }, px: { xs: 1, md: 10 }, py: 3, display: 'grid', boxShadow: 2 }}>
                 {loading ?
                     <CircularProgress sx={{ mx: 'auto' }} /> :
                     <>
                         <Box sx={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(4, 1fr)',
-                            gridTemplateAreas: `"side main main main"`
+                            display: { xs: 'flex', md: 'grid' },
+                            flexDirection: { xs: 'column' },
+                            gridTemplateColumns: { md: 'repeat(4, 1fr)' },
+                            gridTemplateAreas: { md: `"side main main main"` }
                         }}>
-                            <Box sx={{ gridArea: 'side', p: 3, textAlign: 'center' }}>
+                            <Box sx={{ gridArea: { md: 'side' }, p: { xs: 1, md: 3 }, textAlign: 'center' }}>
                                 <Avatar sx={{ width: 150, height: 150, bgcolor: indigo[600], mb: 1, mx: 'auto' }} />
                                 <Typography>Followers</Typography>
                                 <Typography>{profile.followers}</Typography>
@@ -110,8 +112,8 @@ const UserProfile = () => {
                                         <Button color="primary" onClick={handleFollow}>{`Follow ${profile.username}`}</Button>
                                 }
                             </Box>
-                            <Box sx={{ gridArea: 'main', p: 3 }}>
-                                <Typography variant="h3">{profile.username}</Typography>
+                            <Box sx={{ gridArea: { md: 'side' }, p: { xs: 1, md: 3 } }}>
+                                <Typography variant="h4">{profile.username}</Typography>
                                 <Divider sx={{ mb: 3 }} />
                                 <Typography variant="h5" sx={{ mb: 1 }}>{`${profile.username}'s articles`}</Typography>
                                 {
@@ -123,7 +125,7 @@ const UserProfile = () => {
                                             {
                                                 profileArticles.map((article, index) => (
                                                     <>
-                                                        <ArticlePreview key={index} article={article} />
+                                                        <ArticlePreview passedKey={index} key={index} article={article} />
                                                     </>
                                                 ))
                                             }
@@ -140,7 +142,7 @@ const UserProfile = () => {
                                             {
                                                 likedArticles.map((article, index) => (
                                                     <>
-                                                        <ArticlePreview key={index} article={article} />
+                                                        <ArticlePreview passedKey={index} key={index} article={article} />
                                                     </>
                                                 ))
                                             }

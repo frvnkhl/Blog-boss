@@ -6,21 +6,18 @@ const BCRYPT_SALT_ROUNDS = 12;
 
 exports.registerUser = async (req, user) => {
     req.logIn(user, async () => {
-        // console.log(user);
         const data = {
             userEmail: req.body.email,
             username: req.body.username,
             password: req.body.password
         };
-        // console.log(data);
         await User.findOne({ username: data.username }).then(user => {
-            // console.log(user);
             user.email = data.userEmail;
         }).then(() => {
             console.log('user created in db');
         });
     });
-}
+};
 
 exports.loginUser = async (req, users) => {
     req.logIn(users, () => {
@@ -33,40 +30,37 @@ exports.loginUser = async (req, users) => {
         });
         return token;
     }
-
     return getUserToken();
-}
+};
 
 exports.showProfile = async (user) => {
     return formatUser(user);
-}
+};
 
 exports.getUser = async (id) => {
     return await User.findById(mongoose.Types.ObjectId(id))
         .then(user => formatUser(user));
-}
+};
 
 exports.passwordChange = async (req, user) => {
     const password = req.body.password;
-    console.log({newPass: password});
+    console.log({ newPass: password });
     const response = bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
         .then(hashedPassword => {
-            console.log({hashedPass: hashedPassword});
+            console.log({ hashedPass: hashedPassword });
             return User.updateOne({ _id: user._id }, { password: hashedPassword });
         });
 
     const getResponse = async () => {
         const res = await response;
-        // console.log({ response: res });
         return res;
     }
-
     return getResponse();
-}
+};
 
 exports.avatarChange = async (user, avatar) => {
     return await User.updateOne({ _id: user._id }, { avatar: avatar });
-}
+};
 
 const formatUser = (user) => {
     return {

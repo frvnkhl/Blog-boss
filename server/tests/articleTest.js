@@ -70,7 +70,7 @@ describe('GET /:id - success', () => {
 
 describe('PATCH /:id - success', () => {
     it('should successfully edit the selected article', async () => {
-        const articleToChange = await Article.findOne({ title: "test Article"});
+        const articleToChange = await Article.findOne({ title: "test Article" });
         const articleId = articleToChange._id;
         const newTitle = 'New Article title';
         const response = await server.patch(`/article/${articleId}`)
@@ -105,7 +105,7 @@ describe('DELETE /:id - success', () => {
         const articleId = articleToChange._id;
         const response = await server.delete(`/article/${articleId}`)
             .set('Authorization', `JWT ${token}`);
-        
+
         expect(response.status).to.eql(200);
     });
 });
@@ -142,7 +142,7 @@ describe('DELETE /:id/:commentId - success', () => {
 
         const response = await server.delete(`/article/${articleId}/${commentId}`)
             .set('Authorization', `JWT ${token}`);
-        
+
         expect(response.status).to.eql(200);
     });
 });

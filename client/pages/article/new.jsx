@@ -1,4 +1,4 @@
-import { Box, Typography, Grid } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
 import Navbar from "../../components/Navbar";
@@ -10,9 +10,7 @@ const NewArticle = () => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-
     const checkIfLoggedIn = useCallback(() => {
-        //If not passed from the url, it will search for token in the local storage
         setLoading(true);
         let accessToken = localStorage.getItem('JWT');
         if (accessToken === null || !TokenService.isTokenValid(accessToken)) {
@@ -24,7 +22,7 @@ const NewArticle = () => {
         setLoading(false);
     },
         [],
-    )
+    );
 
     //Check the JWT token for authorisation in the first render
     useEffect(() => {
@@ -34,19 +32,22 @@ const NewArticle = () => {
     return (
         <>
             <Navbar loggedIn={loggedIn} />
-            <Grid
-                container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justifyContent="flex-start"
-                style={{ minHeight: '100vh' }}
-            >
-                <BlogForm />
-            </Grid>
+            {loading ?
+                <CircularProgress sx={{ mx: 'auto' }} />
+                :
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="flex-start"
+                    style={{ minHeight: '100vh' }}
+                >
+                    <BlogForm />
+                </Grid>
+            }
         </>
     )
-
-}
+};
 
 export default NewArticle;

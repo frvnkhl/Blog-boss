@@ -4,12 +4,13 @@ import Navbar from '../components/Navbar'
 import RegisterForm from '../components/RegisterForm'
 import LoginForm from '../components/LoginForm'
 import { Box } from '@mui/system'
-import { CircularProgress, Typography } from '@mui/material'
+import { CircularProgress, SwipeableDrawer, Typography, Tooltip, IconButton } from '@mui/material'
 import DataService from '../services/DataService'
 import TokenService from '../services/TokenService'
 import Sidebar from '../components/Sidebar'
 import { useRouter } from 'next/router'
 import ArticlePreview from '../components/ArticlePreview'
+import SortIcon from '@mui/icons-material/Sort';
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState();
@@ -18,17 +19,18 @@ const Home = () => {
   const [filter, setFilter] = useState('all');
   const [title, setTitle] = useState('All Articles');
   const [user, setUser] = useState('');
+  const [open, setOpen] = useState(false);
   const [followedUsersArticles, setFollowedUsersArticles] = useState([]);
   const router = useRouter();
 
   const checkIfLoggedIn = useCallback(() => {
-    if(router.isReady) {
-       //Check if token was passed from 3rd party login
-       const {token} = router.query;
-       if(token !== undefined) {
+    if (router.isReady) {
+      //Check if token was passed from 3rd party login via url
+      const { token } = router.query;
+      if (token !== undefined) {
         localStorage.setItem('JWT', token);
         router.push('/');
-       }
+      }
       //If not passed from the url, it will search for token in the local storage
       const accessToken = localStorage.getItem('JWT');
       if (accessToken === null || !TokenService.isTokenValid(accessToken)) {
@@ -44,11 +46,11 @@ const Home = () => {
           setFilter(router.query.category)
         }
         DataService.getAllArticles(accessToken).then(res => {
-          setArticles(res.data.articles);
+          setArticles(res.data.articles.reverse());
         });
         setTimeout(() => setLoading(false), 2000);
       }
-    }  
+    }
   },
     [router],
   );
@@ -78,10 +80,10 @@ const Home = () => {
         console.log({ filteredArticles: followedUsersArticles });
         return followedUsersArticles;
       }
-    }
+    };
     setTitle('All articles');
     return articles;
-  }
+  };
 
   const filteredArticles = useMemo(() => {
     const result = filterArticles(articles, filter)
@@ -89,15 +91,15 @@ const Home = () => {
     return result;
   }, [articles, filter]);
 
-  // const handleFilterChange = useCallback(() => {
-  //   console.log({articles: filteredArticles, filter: filter});
-  // }, [filteredArticles, filter]);
+  const toggleDrawer = (closed) => {
+    closed ? setOpen(true) : setOpen(false);
+  };
 
   return (
     <>
       <Head>Welcome to Blog Boss</Head>
       <Navbar loggedIn={loggedIn} />
-      {loading ?
+      { loading ?
         <CircularProgress sx={{ mx: 'auto' }} /> :
         <>
           {
@@ -106,45 +108,49 @@ const Home = () => {
                 <Box flexGrow={0}>
 
                 </Box>
-                <Box display="flex" flexDirection="row" flexGrow={1}>
+                <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} flexGrow={1}>
                   <LoginForm />
                   <RegisterForm />
                 </Box>
               </Box>
               :
-              <Box sx={{ m: 5, p: 2, display: 'grid' }}>
-                {filteredArticles == null || filteredArticles === undefined ?
-                  <Typography variant='h3'>
-                    Sorry, no articles to show
-                  </Typography>
-                  :
-                  <Box sx={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(4, 1fr)',
-                    gridTemplateAreas: `"cat main main main"`
-                  }}>
-                    <Box sx={{
-                      gridArea: 'cat',
-                      p: '3'
-                    }}>
-                      <Sidebar setFilter={setFilter} />
+              <>
+                <Tooltip title="Choose category">
+                  <IconButton
+                    size="large"
+                    color="inherit"
+                    onClick={() => toggleDrawer(true)}
+                  >
+                    <SortIcon />
+                  </IconButton>
+                </Tooltip>
+                <SwipeableDrawer anchor='left' open={open} onClose={() => toggleDrawer(false)} onOpen={() => toggleDrawer(true)}>
+                  <Sidebar setFilter={setFilter} toggleDrawer={toggleDrawer} />
+                </SwipeableDrawer>
+                <Box sx={{ m: { xs: 1, md: 5 }, p: 2, display: 'grid' }}>
+                  {filteredArticles == null || filteredArticles === undefined ?
+                    <Typography variant='h3'>
+                      Sorry, no articles to show
+                    </Typography>
+                    :
+                    <Box>
+                      <Box>
+                        <Typography variant='h2' fontWeight='bold' mb={3} textAlign='center'>
+                          {title}
+                        </Typography>
+                        {filteredArticles.map((article, index) => (
+                          <ArticlePreview article={article} key={index} passedKey={index} />
+                        ))}
+                      </Box>
                     </Box>
-                    <Box sx={{ gridArea: 'main' }}>
-                      <Typography variant='h2' fontWeight='bold' mb={3} textAlign='center'>
-                        {title}
-                      </Typography>
-                      {filteredArticles.map(article => (
-                        <ArticlePreview article={article} />
-                      ))}
-                    </Box>
-                  </Box>
-                }
-              </Box>
+                  }
+                </Box>
+              </>
           }
         </>
       }
     </>
-  )
-}
+  );
+};
 
 export default Home;

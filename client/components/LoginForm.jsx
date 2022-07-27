@@ -9,12 +9,10 @@ const LoginForm = () => {
         username: '',
         password: ''
     });
-
     const [message, setMessage] = useState({
         message: '',
         colour: ''
     });
-
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
 
@@ -64,7 +62,7 @@ const LoginForm = () => {
     };
 
     return (
-        <Box sx={{ width: '40%', m: 5, p: 2, display: 'grid', textAlign: 'center', boxShadow: 2 }}>
+        <Box sx={{ width: {xs:'95%', md:'40%'}, m: {xs: 1, md:5}, p: 2, display: 'grid', textAlign: 'center', boxShadow: 2 }}>
             {message.message !== '' && <Alert severity={message.colour}>{message.message}</Alert>}
             <h2>Login to your account</h2>
             <FormControl sx={{ m: 1, }} variant="standard">

@@ -10,12 +10,10 @@ const RegisterForm = () => {
         username: '',
         password: ''
     });
-
     const [message, setMessage] = useState({
         message: '',
         colour: ''
     });
-
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
 
@@ -63,7 +61,7 @@ const RegisterForm = () => {
     };
 
     return (
-        <Box sx={{ width: '40%', m: 5, p: 2, display: 'grid', textAlign: 'center', boxShadow: 2 }}>
+        <Box sx={{ width: { xs: '95%', md: '40%' }, m: { xs: 1, md: 5 }, p: 2, display: 'grid', textAlign: 'center', boxShadow: 2 }}>
             {message.message !== '' && <Alert severity={message.colour}>{message.message}</Alert>}
             <h2>Create your free account</h2>
             <FormControl sx={{ m: 1, }} variant="standard">
@@ -101,7 +99,7 @@ const RegisterForm = () => {
             }} onClick={handleFacebookSignUp} startIcon={<FacebookRounded />}>Register with Facebook</Button>
 
         </Box>
-    )
-}
+    );
+};
 
 export default RegisterForm;

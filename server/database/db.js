@@ -7,4 +7,4 @@ exports.connectDb = () => {
     .catch(err => console.log({dbError: err}));
 
     return mongoose.connection
-}
+};

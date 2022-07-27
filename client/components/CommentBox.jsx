@@ -2,16 +2,14 @@ import { Box, Typography, Divider, IconButton, Card, CardContent, CardActions, T
 import DataService from "../services/DataService";
 import { useState } from "react";
 import { Send, ThumbUp, ThumbDown, Close } from "@mui/icons-material";
-import { useRouter } from "next/router";
 
 const CommentBox = (props) => {
     const [newComment, setNewComment] = useState({
         comment: ''
     });
     const [commentAuthors, setCommentAuthors] = useState([]);
-    const [article, setArticle] = useState(props.article);
-    const [user, setUser] = useState(props.user);
-    const router = useRouter();
+    const article = props.article;
+    const user = props.user;
 
     const getUserById = (userId) => {
         DataService.getUser(userId, localStorage.getItem('JWT')).then(res => {
@@ -29,43 +27,37 @@ const CommentBox = (props) => {
     };
 
     const getUsername = (userId) => {
-
         getUserById(userId);
         const foundUser = commentAuthors.filter(user => user.id === userId);
         return foundUser.length > 0 && foundUser[0].username;
-    }
+    };
 
     const handleCommentChange = (event) => {
         const { value } = event.target;
         setNewComment({ comment: value });
-        console.log(newComment);
     };
 
     const addComment = () => {
         DataService.addNewComment(props.articleId, newComment, localStorage.getItem('JWT')).then(res => {
             window.location.reload();
-            console.log(res.data);
         });
     };
 
     const handleCommentLike = (commentId) => {
         DataService.likeComment(props.articleId, commentId, localStorage.getItem('JWT')).then(res => {
             window.location.reload();
-            console.log(res.data);
         });
     };
 
     const handleCommentDelete = (commentId) => {
         DataService.deleteComment(props.articleId, commentId, localStorage.getItem('JWT')).then(res => {
             window.location.reload();
-            console.log(res.data);
         });
     };
 
-
     return (
         <>
-            <Box sx={{ mx: 'auto', my: 5, width: '80%', px: 10, py: 3, display: 'grid', boxShadow: 2 }}>
+            <Box sx={{ mx: 'auto', my: 5, width: { xs: '95%', md: '80%' }, px: { xs: 2, md: 5 }, py: 3, display: 'grid', boxShadow: 2 }}>
                 <Typography variant="h4">{article.comments.length === 1 ? `${article.comments.length} Comment` : `${article.comments.length} Comments`}</Typography>
                 <Divider sx={{ my: 3 }} />
                 {article.comments.length > 0 ?

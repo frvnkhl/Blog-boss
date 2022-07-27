@@ -4,8 +4,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
-import SettingsIcon from '@mui/icons-material/Settings';
-import MoreIcon from '@mui/icons-material/MoreVert';
+import MenuIcon from '@mui/icons-material/Menu';
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -18,9 +17,9 @@ const Search = styled('div')(({ theme }) => ({
     '&:hover': {
         backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
+    marginRight: { xs: 1, md: theme.spacing(2) },
+    marginLeft: { xs: 2, md: 0 },
+    width: { xs: 'auto', md: '100%' },
     [theme.breakpoints.up('sm')]: {
         marginLeft: theme.spacing(3),
         width: 'auto',
@@ -44,7 +43,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
-        width: '100%',
+        width: { md: '100%' },
         [theme.breakpoints.up('md')]: {
             width: '20ch',
         },
@@ -52,7 +51,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Navbar = (props) => {
-    const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const [search, setSearch] = useState('');
     const [open, setOpen] = useState(false);
@@ -61,12 +59,7 @@ const Navbar = (props) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-    const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
@@ -79,18 +72,18 @@ const Navbar = (props) => {
     const handleLogout = () => {
         localStorage.removeItem('JWT');
         router.push('/').then(router.reload());
-    }
+    };
 
     const handleChange = (event) => {
-        const {value} = event.target;
+        const { value } = event.target;
         setSearch(value);
-    }
+    };
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             handleOpen();
         }
-    }
+    };
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
     const renderMobileMenu = (
@@ -109,13 +102,13 @@ const Navbar = (props) => {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem onClick={handleProfileMenuOpen}>
+            <MenuItem>
                 <IconButton
                     size="large"
                     aria-label="account of current user"
                     aria-controls="primary-search-account-menu"
                     aria-haspopup="true"
-                    color="inherit"
+                    color="success"
                     href="/profile"
                 >
                     <AccountCircle />
@@ -128,23 +121,11 @@ const Navbar = (props) => {
                     aria-label="account of current user"
                     aria-controls="primary-search-account-menu"
                     aria-haspopup="true"
-                    color="inherit"
+                    color="info"
                 >
                     <EditIcon />
                 </IconButton>
                 <p>Add new article</p>
-            </MenuItem>
-            <MenuItem onClick={handleProfileMenuOpen}>
-                <IconButton
-                    size="large"
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    <SettingsIcon />
-                </IconButton>
-                <p>Settings</p>
             </MenuItem>
             <MenuItem onClick={handleLogout}>
                 <IconButton
@@ -152,7 +133,7 @@ const Navbar = (props) => {
                     aria-label="account of current user"
                     aria-controls="primary-search-account-menu"
                     aria-haspopup="true"
-                    color="inherit"
+                    color="error"
                 >
                     <LogoutIcon />
                 </IconButton>
@@ -160,7 +141,6 @@ const Navbar = (props) => {
             </MenuItem>
         </Menu>
     );
-
 
     return (
         <Box>
@@ -179,7 +159,7 @@ const Navbar = (props) => {
                                         Blog Boss
                                     </Typography>
                                 </Link>
-                                <Search sx={{ display: { xs: 'none', md: 'block' } }}>
+                                <Search sx={{ display: 'block', width: { xs: '50%', md: '20%' }, ml: { xs: 2 } }}>
                                     <SearchIconWrapper>
                                         <SearchIcon />
                                     </SearchIconWrapper>
@@ -203,19 +183,9 @@ const Navbar = (props) => {
                                             <EditIcon />
                                         </IconButton>
                                     </Tooltip>
-                                    <Tooltip title="Settings">
-
-                                        <IconButton
-                                            size="large"
-                                            color="inherit"
-                                        >
-                                            <SettingsIcon />
-                                        </IconButton>
-                                    </Tooltip>
                                     <Tooltip title="My profile">
                                         <IconButton
                                             size="large"
-                                            edge="end"
                                             aria-label="account of current user"
                                             color="inherit"
                                             href="/profile"
@@ -244,7 +214,7 @@ const Navbar = (props) => {
                                         onClick={handleMobileMenuOpen}
                                         color="inherit"
                                     >
-                                        <MoreIcon />
+                                        <MenuIcon />
                                     </IconButton>
                                 </Box>
                             </Toolbar>
@@ -261,7 +231,7 @@ const Navbar = (props) => {
                                     variant="h6"
                                     noWrap
                                     component="div"
-                                    sx={{ display: { xs: 'none', sm: 'block' } }}
+                                    sx={{ display: 'block' }}
                                 >
                                     Blog Boss
                                 </Typography>
@@ -274,7 +244,6 @@ const Navbar = (props) => {
         </Box>
 
     );
-}
-
+};
 
 export default Navbar;

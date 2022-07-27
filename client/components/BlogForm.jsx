@@ -1,5 +1,5 @@
 // ToDo delete draft-js
-import { Box, FormControl, TextField, Typography, Button, Autocomplete, Chip, Alert } from "@mui/material";
+import { Box, FormControl, TextField, Typography, Button, Autocomplete, Chip, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -17,6 +17,8 @@ const BlogForm = () => {
         category: [],
         tags: []
     });
+
+    //setting up rich text editor
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -34,17 +36,14 @@ const BlogForm = () => {
     });
     const blogCategories = ['food', 'travel', 'technology', 'society', 'health', 'lifestyle', 'fashion', 'art'];
     const [tagsInput, setTagsInput] = useState('');
-
     const router = useRouter();
 
     if (!editor) {
         return null
     }
 
-
     const handleChange = (event) => {
         const { name, value } = event.target;
-        console.log();
         setArticle(prevInput => {
             return { ...prevInput, [name]: value };
         });
@@ -106,17 +105,16 @@ const BlogForm = () => {
     }
 
     return (
-        <Box sx={{ m: 5, width: '80%', p: 2, display: 'grid', boxShadow: 2 }}>
+        <Box sx={{ m: { xs: 2, md: 5 }, width: { xs: '90%', md: '80%' }, p: 2, display: 'grid', boxShadow: 2 }}>
             <Typography variant="h3" fontWeight='bold' textAlign='center' mt={3} mb={3}>
                 Write new article
             </Typography>
             <FormControl sx={{ m: 1, }} variant="standard">
                 <TextField id="standard-basic" label="Title" variant="standard" name="title" value={article.title} onChange={handleChange} />
             </FormControl>
-            <Box sx={{ m: 1, boxShadow: 2, p: 2 }}>
+            <Box sx={{ m: 1, boxShadow: 2, p: { xs: 1, md: 2 } }}>
                 <EditorMenu editor={editor} />
                 <EditorContent editor={editor} />
-                {/* <Button onClick={handleEditorChange}>Save</Button> */}
             </Box>
             <Autocomplete
                 sx={{ m: 1 }}
@@ -124,7 +122,6 @@ const BlogForm = () => {
                 id="tags-standard"
                 options={blogCategories}
                 filterSelectedOptions
-                // getOptionLabel={(option) => option.title}
                 defaultValue={article.category}
                 value={article.category}
                 name="category"
@@ -144,7 +141,7 @@ const BlogForm = () => {
                 sx={{ m: 1 }}
                 variant="standard"
                 label="Tags"
-                placeholder="Write relevant tags and separate them with a comma (',')"
+                placeholder="Separate tags with a comma (',')"
                 name="tags"
                 value={tagsInput}
                 onChange={handleTagsInputChange}
@@ -163,8 +160,5 @@ const BlogForm = () => {
         </Box>
     )
 }
-
-
-
 
 export default BlogForm;
