@@ -112,7 +112,7 @@ const UserProfile = () => {
                                         <Button color="primary" onClick={handleFollow}>{`Follow ${profile.username}`}</Button>
                                 }
                             </Box>
-                            <Box sx={{ gridArea: { md: 'side' }, p: { xs: 1, md: 3 } }}>
+                            <Box sx={{ gridArea: { md: 'main' }, p: { xs: 1, md: 3 } }}>
                                 <Typography variant="h4">{profile.username}</Typography>
                                 <Divider sx={{ mb: 3 }} />
                                 <Typography variant="h5" sx={{ mb: 1 }}>{`${profile.username}'s articles`}</Typography>
