@@ -36,7 +36,7 @@ const SearchResults = (props) => {
                         <Typography variant="h4">{`Search results for "${props.search}"`}</Typography>
                         {
                             searchResults.map((article, index) => (
-                                <ArticlePreview passedKey={index} key={index} article={article} />
+                                <ArticlePreview key={index} article={article} />
                             ))
                         }
                     </>

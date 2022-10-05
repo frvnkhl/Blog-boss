@@ -30,7 +30,7 @@ const Profile = () => {
         } else {
             setLoggedIn(true);
             DataService.getCurrentUser(accessToken).then(res => {
-                console.log({ user: res.data });
+                // console.log({ user: res.data });
                 setUser(res.data);
             });
             setLoading(false);
@@ -49,7 +49,7 @@ const Profile = () => {
         let accessToken = localStorage.getItem('JWT');
         DataService.getAllArticles(accessToken).then(res => {
             const filteredArticles = res.data.articles.filter(article => article.author === user.id);
-            console.log({ articles: filteredArticles, allArticles: res.data.articles });
+            // console.log({ articles: filteredArticles, allArticles: res.data.articles });
             setUserArticles(filteredArticles);
             if (user.favouriteArticles !== undefined && user.favouriteArticles.length > 0) {
                 const likes = res.data.articles.filter(article => user.favouriteArticles.includes(article._id));
@@ -107,10 +107,10 @@ const Profile = () => {
                                         <Box>
                                             {
                                                 userArticles.map((article, index) => (
-                                                    <>
-                                                        <ArticlePreview passedKey={index} key={index} article={article} />
+                                                    <div key={index}>
+                                                        <ArticlePreview article={article} />
                                                         <Button variant="text" color="error" onClick={() => deleteArticle(article._id)} startIcon={<DeleteIcon />}>{`Delete "${article.title}" article`}</Button>
-                                                    </>
+                                                    </div>
                                                 ))
                                             }
                                         </Box>
@@ -125,10 +125,10 @@ const Profile = () => {
                                         <Box>
                                             {
                                                 likedArticles.map((article, index) => (
-                                                    <>
-                                                        <ArticlePreview passedKey={index} key={index} article={article} />
+                                                    <div key={index}>
+                                                        <ArticlePreview article={article} />
                                                         <Button variant="text" color="error" onClick={() => dislikeArticle(article._id)} startIcon={<ThumbDownIcon />}>{`Unlike "${article.title}" article`}</Button>
-                                                    </>
+                                                    </div>
                                                 ))
                                             }
                                         </Box>

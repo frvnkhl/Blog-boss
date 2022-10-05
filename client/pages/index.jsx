@@ -34,12 +34,12 @@ const Home = () => {
       //If not passed from the url, it will search for token in the local storage
       const accessToken = localStorage.getItem('JWT');
       if (accessToken === null || !TokenService.isTokenValid(accessToken)) {
-        setTimeout(() => setLoading(false), 2000);
+        setLoading(false);
         setLoggedIn(false);
       } else {
         setLoggedIn(true);
         DataService.getCurrentUser(accessToken).then(res => {
-          console.log({ user: res.data });
+          // console.log({ user: res.data });
           setUser(res.data);
         });
         if (router.query.category !== undefined) {
@@ -48,7 +48,7 @@ const Home = () => {
         DataService.getAllArticles(accessToken).then(res => {
           setArticles(res.data.articles.reverse());
         });
-        setTimeout(() => setLoading(false), 2000);
+        setLoading(false);
       }
     }
   },
@@ -77,7 +77,7 @@ const Home = () => {
         return articles.filter(article => article.category.includes(filter));
       } else {
         setTitle('Articles of followed users');
-        console.log({ filteredArticles: followedUsersArticles });
+        // console.log({ filteredArticles: followedUsersArticles });
         return followedUsersArticles;
       }
     };
@@ -87,7 +87,7 @@ const Home = () => {
 
   const filteredArticles = useMemo(() => {
     const result = filterArticles(articles, filter)
-    console.log({ articles: result });
+    // console.log({ articles: result });
     return result;
   }, [articles, filter]);
 
@@ -139,7 +139,7 @@ const Home = () => {
                           {title}
                         </Typography>
                         {filteredArticles.map((article, index) => (
-                          <ArticlePreview article={article} key={index} passedKey={index} />
+                          <ArticlePreview article={article} key={index} />
                         ))}
                       </Box>
                     </Box>

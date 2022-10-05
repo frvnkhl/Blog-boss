@@ -7,6 +7,6 @@ module.exports = nextConfig
 
 module.exports = {
   env: {
-    SERVER_URI: 'https://blog-boss.herokuapp.com'
+    SERVER_URI: 'http://localhost:6299'
   },
 }

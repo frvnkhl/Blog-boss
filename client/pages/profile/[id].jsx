@@ -29,12 +29,12 @@ const UserProfile = () => {
             } else {
                 setLoggedIn(true);
                 DataService.getCurrentUser(accessToken).then(res => {
-                    console.log({ user: res.data });
+                    // console.log({ user: res.data });
                     setUser(res.data);
                 });
                 console.log({ userId: profileId });
                 DataService.getUser(profileId, accessToken).then(res => {
-                    console.log({ profile: res.data });
+                    // console.log({ profile: res.data });
                     setProfile(res.data);
                 })
                 setLoading(false);
@@ -54,7 +54,7 @@ const UserProfile = () => {
         const accessToken = localStorage.getItem('JWT');
         DataService.getAllArticles(accessToken).then(res => {
             const filteredArticles = res.data.articles.filter(article => article.author === profile.id);
-            console.log({ allArticles: res.data.articles, userArticles: filteredArticles });
+            // console.log({ allArticles: res.data.articles, userArticles: filteredArticles });
             setProfileArticles(filteredArticles);
             if (profile.favouriteArticles !== undefined && profile.favouriteArticles.length > 0) {
                 const likes = res.data.articles.filter(article => profile.favouriteArticles.includes(article._id));
@@ -69,7 +69,7 @@ const UserProfile = () => {
         if (!router.isReady) return;
         const accessToken = localStorage.getItem('JWT');
         DataService.getUserFollowers(profileId, accessToken).then(res => {
-            console.log({ followers: res, profileId: profileId });
+            // console.log({ followers: res, profileId: profileId });
             if (res.data === '' || !res.data.includes(user.id)) {
                 setIsFollowed(false);
             } else {
@@ -80,9 +80,7 @@ const UserProfile = () => {
     }, [router, user]);
 
     const handleFollow = () => {
-        DataService.followUser(profile.id, localStorage.getItem('JWT')).then(res => {
-            console.log(res);
-        });
+        DataService.followUser(profile.id, localStorage.getItem('JWT'));
         setLoading(true);
         window.location.reload();
     };
@@ -124,9 +122,9 @@ const UserProfile = () => {
                                         <Box>
                                             {
                                                 profileArticles.map((article, index) => (
-                                                    <>
-                                                        <ArticlePreview passedKey={index} key={index} article={article} />
-                                                    </>
+                                                    <div key={index}>
+                                                        <ArticlePreview key={index} article={article} />
+                                                    </div>
                                                 ))
                                             }
                                         </Box>
@@ -141,9 +139,9 @@ const UserProfile = () => {
                                         <Box>
                                             {
                                                 likedArticles.map((article, index) => (
-                                                    <>
-                                                        <ArticlePreview passedKey={index} key={index} article={article} />
-                                                    </>
+                                                    <div key={index}>
+                                                        <ArticlePreview key={index} article={article} />
+                                                    </div>
                                                 ))
                                             }
                                         </Box>
