@@ -72,7 +72,7 @@ const LoginForm = () => {
             {
                 loading ?
                     <>
-                        <CircularProgress />
+                        <CircularProgress sx={{ margin: auto }} />
                     </>
                     :
                     <>

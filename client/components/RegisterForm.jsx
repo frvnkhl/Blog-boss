@@ -71,7 +71,7 @@ const RegisterForm = () => {
             {
                 loading ?
                     <>
-                        <CircularProgress />
+                        <CircularProgress sx={{ margin: auto }} />
                     </>
                     :
                     <>

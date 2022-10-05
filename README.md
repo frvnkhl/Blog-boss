@@ -19,7 +19,7 @@ This is my second full-stack project where I managed to implement all the functi
 - Search feature that looks up article based on their tags, title and content
 
 ### App demo
-[Here's the link to the demo app](https://blog-boss-client.herokuapp.com/)
+[Here's the link to the demo app](https://blog-boss.vercel.app/)
 
 To try out all the functionalities, you have to sign up first. You can register with username and password or use 3rd party sign up via Google or Facebook. In case you'd like your account deleted at the end, just [message me](mailto:uhalfr@pm.me) and I'll do so asap.
 
