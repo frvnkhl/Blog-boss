@@ -70,9 +70,9 @@ const RegisterForm = () => {
             <h2>Create your free account</h2>
             {
                 loading ?
-                    <>
-                        <CircularProgress sx={{ margin: auto }} />
-                    </>
+                    <Stack alignItems="center">
+                        <CircularProgress />
+                    </Stack>
                     :
                     <>
                         <FormControl sx={{ m: 1, }} variant="standard">

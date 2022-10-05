@@ -71,9 +71,9 @@ const LoginForm = () => {
             <h2>Login to your account</h2>
             {
                 loading ?
-                    <>
-                        <CircularProgress sx={{ margin: auto }} />
-                    </>
+                    <Stack alignItems="center">
+                        <CircularProgress />
+                    </Stack>
                     :
                     <>
                         <FormControl sx={{ m: 1, }} variant="standard">
