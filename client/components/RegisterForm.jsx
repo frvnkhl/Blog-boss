@@ -53,11 +53,11 @@ const RegisterForm = () => {
     };
 
     const handleGoogleSignUp = async () => {
-        router.push('http://localhost:6299/user/auth/google');
+        router.push(`${process.env.SERVER_URI}/user/auth/google`);
     };
 
     const handleFacebookSignUp = async () => {
-        router.push('http://localhost:6299/user/auth/facebook');
+        router.push(`${process.env.SERVER_URI}/user/auth/facebook`);
     };
 
     return (
