@@ -54,11 +54,11 @@ const LoginForm = () => {
     };
 
     const handleGoogleSignIn = async () => {
-        router.push(`${process.env.SERVER_URI}/user/auth/google`);
+        router.push('https://blog-boss-api.onrender.com/user/auth/google');
     };  
     
     const handleFacebookSignIn = async () => {
-        router.push(`${process.env.SERVER_URI}/user/auth/facebook`);
+        router.push('https://blog-boss-api.onrender.com/user/auth/facebook');
     };
 
     return (
